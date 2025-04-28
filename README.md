@@ -34,6 +34,3 @@ Example Query:
   }
 }
 ```
-
-## Metrics
-Visit [http://localhost:2112/metrics](http://localhost:2112/metrics)
