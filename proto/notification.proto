@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package notification;
+
+option go_package = "github.com/chaitanya712/distributed-notification-service/proto;notification";
+
+message Post {
+  string id = 1;
+  string user_id = 2;
+  string body = 3;
+}
+
+message NotificationResponse {
+  string status = 1;
+  int32 total_notifications = 2;
+}
+
+service NotificationService {
+  rpc PublishPost(Post) returns (NotificationResponse);
+}
