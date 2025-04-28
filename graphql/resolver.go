@@ -4,19 +4,44 @@ import (
 	"context"
 
 	"github.com/chaitanya712/distributed-notification-service/internal/data"
+	"github.com/graph-gophers/graphql-go"
 )
 
 type Resolver struct{}
 
-func (r *Resolver) GetNotifications(ctx context.Context, userId string) ([]*data.Notification, error) {
-	ns := data.NotificationStore[userId]
+type GetNotificationsArgs struct {
+	UserID string
+}
+
+type NotificationResolver struct {
+	Notification *data.Notification
+}
+
+func (r *NotificationResolver) Id() graphql.ID {
+	return graphql.ID(r.Notification.ID)
+}
+
+func (r *NotificationResolver) UserId() graphql.ID {
+	return graphql.ID(r.Notification.UserID)
+}
+
+func (r *NotificationResolver) PostID() graphql.ID {
+	return graphql.ID(r.Notification.PostID)
+}
+
+func (r *NotificationResolver) Message() string {
+	return r.Notification.Message
+}
+
+func (r *Resolver) GetNotifications(ctx context.Context, args GetNotificationsArgs) ([]*NotificationResolver, error) {
+	ns := data.NotificationStore[args.UserID]
 	if len(ns) > 20 {
 		ns = ns[len(ns)-20:]
 	}
-	var result []*data.Notification
+	var result []*NotificationResolver
 	for _, n := range ns {
-		nCopy := n
-		result = append(result, &nCopy)
+
+		result = append(result, &NotificationResolver{&n})
 	}
 	return result, nil
 }

@@ -18,11 +18,10 @@ func (s *NotificationServer) PublishPost(ctx context.Context, post *pb.Post) (*p
 	total := 0
 	for _, follower := range followers {
 		n := data.Notification{
-			ID:        fmt.Sprintf("n-%s-%s", follower, post.Id),
-			UserID:    follower,
-			PostID:    post.Id,
-			Message:   fmt.Sprintf("New post from user %s", post.UserId),
-			Timestamp: post.Timestamp.AsTime(),
+			ID:      fmt.Sprintf("n-%s-%s", follower, post.Id),
+			UserID:  follower,
+			PostID:  post.Id,
+			Message: fmt.Sprintf("New post from user %s", post.UserId),
 		}
 		queue.EnqueueNotification(n)
 		total++
