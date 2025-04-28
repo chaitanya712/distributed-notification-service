@@ -3,7 +3,6 @@ type Notification {
   userId: ID!
   postId: ID!
   message: String!
-  timestamp: String!
 }
 
 type Query {
